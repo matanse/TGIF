@@ -1,18 +1,5 @@
-const members = data.results[0].members;
+const senate_members = data.results[0].members;
 
-// const print_members = arr => {
-//   for (i in arr) {
-//     if (members[i].middle_name == null) {
-//       let full_name = `${members[i].first_name} ${members[i].last_name}`;
-//       console.log(full_name);
-//     } else {
-//       let full_name = `${members[i].first_name} ${members[i].middle_name} ${members[i].last_name}`;
-//       console.log(full_name);
-//     }
-//   }
-// };
-
-// // print_members(members);
 const categories = [
   "Full Name",
   "Party",
@@ -20,21 +7,22 @@ const categories = [
   "Seniority",
   "Percentage of Votes with Party"
 ];
-const create_tables_categories = arr_categories => {
-  const table = document.getElementById("senate-data");
-  const thead = document.createElement("thead");
+const create_tables_categories = (arr_categories, table_id, members) => {
+  const tbl = document.getElementById(table_id);
+  const tblHead = document.createElement("thead");
   const tblBody = document.createElement("tbody");
-  for (i in arr_categories) {
-    const head = document.createElement("th");
-    const head_cell = document.createTextNode(arr_categories[i]);
-    head.appendChild(head_cell);
-    thead.appendChild(head);
-  }
-  table.appendChild(thead);
-  table.setAttribute("border", "2");
-  table.appendChild(tblBody);
+  tbl.appendChild(tblHead);
+  tbl.appendChild(tblBody);
+  tbl.setAttribute("border", "2");
+  tbl.setAttribute("style", "text-align:center;");
 
-  tblBody.innerHTML = "";
+  for (i in arr_categories) {
+    const tblHeadRow = document.createElement("th");
+    const headCellText = document.createTextNode(arr_categories[i]);
+    tblHeadRow.appendChild(headCellText);
+    tblHead.appendChild(tblHeadRow);
+  }
+
   for (j in members) {
     const tblRow = document.createElement("tr");
     const tblCell_name = document.createElement("td");
@@ -73,4 +61,4 @@ const create_tables_categories = arr_categories => {
   }
 };
 
-create_tables_categories(categories);
+create_tables_categories(categories, "senate-data", senate_members);

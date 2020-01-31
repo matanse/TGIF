@@ -1,0 +1,29 @@
+.text-muted > img {
+  height: 60%;
+  width: 60%;
+}
+
+.email-container > img {
+  height: 20%;
+  width: 20%;
+}
+
+nav {
+  background-color: #92b8b8 !important;
+}
+
+.nav-link {
+  background-color: #92b8b8 !important;
+  border: black !important;
+  color: #000000 !important;
+}
+
+.dropdown-menu {
+  background-color: #92b8b8 !important;
+}
+
+.dropdown-item:hover,
+.active:hover,
+.nav-link:hover {
+  background-color: #61b3b3 !important;
+}
