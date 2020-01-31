@@ -1,14 +1,9 @@
-const senate_members = data.results[0].members;
-
-const categories = [
-  "Full Name",
-  "Party",
-  "State",
-  "Seniority",
-  "Percentage of Votes with Party"
-];
-const create_tables_categories = (arr_categories, table_id, members) => {
-  const tbl = document.getElementById(table_id);
+const create_table_and_implament_data = (
+  arr_categories,
+  location_by_id,
+  members
+) => {
+  const tbl = document.getElementById(location_by_id);
   const tblHead = document.createElement("thead");
   const tblBody = document.createElement("tbody");
   tbl.appendChild(tblHead);
@@ -61,4 +56,13 @@ const create_tables_categories = (arr_categories, table_id, members) => {
   }
 };
 
-create_tables_categories(categories, "senate-data", senate_members);
+const categories = [
+  "Full Name",
+  "Party",
+  "State",
+  "Seniority",
+  "Percentage of Votes with Party"
+];
+
+const house_members = data.results[0].members;
+create_table_and_implament_data(categories, "house-data", house_members);
