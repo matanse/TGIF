@@ -1,6 +1,6 @@
 .text-muted > img {
-  height: 60%;
-  width: 60%;
+  height: 50%;
+  width: 50%;
 }
 
 .email-container > img {
@@ -26,4 +26,8 @@ nav {
 .active:hover,
 .nav-link:hover {
   background-color: #61b3b3 !important;
+}
+
+.page-footer {
+  background-color: #92b8b8;
 }
