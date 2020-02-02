@@ -11,39 +11,43 @@ const create_table_and_implament_data = (
   //   tbl.setAttribute("border", "2");
   tbl.setAttribute("style", "text-align:center;");
 
-  for (i in arr_categories) {
+  for (category of arr_categories) {
     const tblHeadRow = document.createElement("th");
-    const headCellText = document.createTextNode(arr_categories[i]);
+    const headCellText = document.createTextNode(category);
     tblHeadRow.appendChild(headCellText);
     tblHead.appendChild(tblHeadRow);
   }
 
-  for (j in members) {
+  for (member of members) {
     const tblRow = document.createElement("tr");
     const tblCell_name = document.createElement("td");
+    const tblName_to_website = document.createElement("a");
+    tblName_to_website.setAttribute("href", `"${member.url}"`);
+    tblName_to_website.setAttribute("target", "_blank");
     const tblCell_party = document.createElement("td");
     const tblCell_state = document.createElement("td");
     const tblCell_seniority = document.createElement("td");
     const tblCell_votes_percentage = document.createElement("td");
-    if (members[j].middle_name == null) {
+    if (member.middle_name == null) {
       const tblCellText_name = document.createTextNode(
-        `${members[j].first_name} ${members[j].last_name}`
+        `${member.first_name} ${member.last_name}`
       );
-      tblCell_name.appendChild(tblCellText_name);
+      tblName_to_website.appendChild(tblCellText_name);
     } else {
       const tblCellText_name = document.createTextNode(
-        `${members[j].first_name} ${members[j].middle_name} ${members[j].last_name}`
+        `${member.first_name} ${member.middle_name} ${member.last_name}`
       );
-      tblCell_name.appendChild(tblCellText_name);
+      tblName_to_website.appendChild(tblCellText_name);
     }
-    const tblCellText_party = document.createTextNode(members[j].party);
-    const tblCellText_state = document.createTextNode(members[j].state);
-    const tblCellText_seniority = document.createTextNode(members[j].seniority);
+    const tblCellText_party = document.createTextNode(member.party);
+    const tblCellText_state = document.createTextNode(member.state);
+    const tblCellText_seniority = document.createTextNode(member.seniority);
     const tblCellText_votes_percentage = document.createTextNode(
-      `${members[j].votes_with_party_pct} %`
+      `${member.votes_with_party_pct} %`
     );
     tblBody.appendChild(tblRow);
     tblRow.appendChild(tblCell_name);
+    tblCell_name.appendChild(tblName_to_website);
     tblRow.appendChild(tblCell_party);
     tblRow.appendChild(tblCell_state);
     tblRow.appendChild(tblCell_seniority);
