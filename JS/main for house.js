@@ -8,7 +8,7 @@ const create_table_and_implament_data = (
   const tblBody = document.createElement("tbody");
   tbl.appendChild(tblHead);
   tbl.appendChild(tblBody);
-  tbl.setAttribute("border", "2");
+  //   tbl.setAttribute("border", "2");
   tbl.setAttribute("style", "text-align:center;");
 
   for (i in arr_categories) {
