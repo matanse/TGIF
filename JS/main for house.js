@@ -36,8 +36,8 @@ const create_table_and_implament_data = (
     tblCell_state.innerHTML = member.state;
     tblCell_seniority.innerHTML = member.seniority;
     tblCell_votes_percentage.innerHTML = member.votes_with_party_pct;
-    tblCell_name.appendChild(tblName_to_website);
 
+    tblCell_name.appendChild(tblName_to_website);
     tblBody.appendChild(tblRow);
     tblRow.appendChild(tblCell_name);
     tblRow.appendChild(tblCell_party);

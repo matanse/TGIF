@@ -3,9 +3,14 @@
   width: 40%;
 }
 
-.email-container > img {
-  height: 20%;
-  width: 20%;
+header > div > div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+}
+
+header > div > div:nth-child(2) > a > img {
+  height: 10%;
+  width: 10%;
 }
 
 nav {
