@@ -8,7 +8,6 @@ const create_table_and_implament_data = (
   const tblBody = document.createElement("tbody");
   tbl.appendChild(tblHead);
   tbl.appendChild(tblBody);
-  // tbl.setAttribute("border", "2");
   tbl.setAttribute("style", "text-align:center;");
 
   for (category of arr_categories) {
@@ -29,34 +28,22 @@ const create_table_and_implament_data = (
     const tblCell_seniority = document.createElement("td");
     const tblCell_votes_percentage = document.createElement("td");
     if (member.middle_name == null) {
-      const tblCellText_name = document.createTextNode(
-        `${member.first_name} ${member.last_name}`
-      );
-      tblName_to_website.appendChild(tblCellText_name);
+      tblName_to_website.innerHTML = `${member.first_name} ${member.last_name}`;
     } else {
-      const tblCellText_name = document.createTextNode(
-        `${member.first_name} ${member.middle_name} ${member.last_name}`
-      );
-      tblName_to_website.appendChild(tblCellText_name);
+      tblName_to_website.innerHTML = `${member.first_name} ${member.middle_name} ${member.last_name}`;
     }
-    const tblCellText_party = document.createTextNode(member.party);
-    const tblCellText_state = document.createTextNode(member.state);
-    const tblCellText_seniority = document.createTextNode(member.seniority);
-    const tblCellText_votes_percentage = document.createTextNode(
-      `${member.votes_with_party_pct} %`
-    );
+    tblCell_party.innerHTML = member.party;
+    tblCell_state.innerHTML = member.state;
+    tblCell_seniority.innerHTML = member.seniority;
+    tblCell_votes_percentage.innerHTML = member.votes_with_party_pct;
+    tblCell_name.appendChild(tblName_to_website);
+
     tblBody.appendChild(tblRow);
     tblRow.appendChild(tblCell_name);
-    tblCell_name.appendChild(tblName_to_website);
     tblRow.appendChild(tblCell_party);
     tblRow.appendChild(tblCell_state);
     tblRow.appendChild(tblCell_seniority);
     tblRow.appendChild(tblCell_votes_percentage);
-
-    tblCell_party.appendChild(tblCellText_party);
-    tblCell_state.appendChild(tblCellText_state);
-    tblCell_seniority.appendChild(tblCellText_seniority);
-    tblCell_votes_percentage.appendChild(tblCellText_votes_percentage);
   }
 };
 
