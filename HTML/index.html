@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container" name="top">
         <header class="blog-header py-3">
             <div class="row flex-nowrap justify-content-between align-items-center">
                 <div class="col-4 pt-1">
@@ -24,21 +24,22 @@
                 </div>
             </div>
         </header>
-        <nav>
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active">home</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                        aria-haspopup="true" aria-expanded="false">congress 113</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="../HTML/senate-data.html">senate</a>
-                        <a class="dropdown-item" href="house page.html">house</a>
-                </li>
-            </ul>
-        </nav>
-
+        <div class="nav-bar">
+            <nav>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active">home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                            aria-haspopup="true" aria-expanded="false">congress 113</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="../HTML/senate-data.html">senate</a>
+                            <a class="dropdown-item" href="house page.html">house</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
        
         <div class="content">
             <div class="accordion" id="accordionExample">
@@ -130,9 +131,10 @@
             </div>
         
         </div>
-        <footer class="page-footer font-small blue">
+        <footer class="page-footer font-small blue fixed-bottom">
                 <div class="footer-copyright text-center py-3">© 2020 TGIF Copyright:
-                    <a> All Rights Reserved</a>
+                    <a> All Rights Reserved </a>
+                    <a href="#top">Page Top</a>
                 </div>
         </footer>
     </div>
@@ -146,8 +148,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-    <script src="../JS/json.js"></script>
-    <!-- <script src="../JS/main.js"></script> -->
+
 </body>
 
 </html>
