@@ -75,22 +75,36 @@ if (document.title == "House Data") {
   create_members_table("senate-data", members_data);
 }
 
-// const members_parties = {
-//   D: 0,
-//   R: 0,
-//   I: 0
-// };
-const create_attendance_table = (location_by_id, members, attend) => {
+const members_parties = {
+  D: {
+    count: 0,
+    votes_with_party_pct: 0
+  },
+  R: {
+    count: 0,
+    votes_with_party_pct: 0
+  },
+  I: {
+    count: 0,
+    votes_with_party_pct: 0
+  },
+  total: {
+    count: 0,
+    votes_with_party_pct: 0
+  }
+};
+const create_attendance_or_mi_table = (location_by_id, members, attend) => {
   const attendance_list = [];
 
   for (member of members) {
-    //   if (member.party == "D") {
-    //     members_parties.D += 1;
-    //   } else if (member.party == "R") {
-    //     members_parties.R += 1;
-    //   } else {
-    //     members_parties.I += 1;
-    //   }
+    members_parties.total.count += 1;
+    if (member.party == "D") {
+      members_parties.D.count += 1;
+    } else if (member.party == "R") {
+      members_parties.R.count += 1;
+    } else {
+      members_parties.I.count += 1;
+    }
 
     if (member.middle_name == null) {
       attendance_list.push({
@@ -108,14 +122,27 @@ const create_attendance_table = (location_by_id, members, attend) => {
       });
     }
   }
-  const sort_by_attendance = _(attendance_list).sortBy(function(x) {
-    return [x.attendance, x.missed_votes];
+  const sort_by_attendance = attendance_list.sort((a, b) => {
+    return b.attendance - a.attendance;
   });
-  console.log(sort_by_attendance);
+
+  const list_length = sort_by_attendance.length;
+  const ten_percent = list_length * 0.1;
+  // console.log(sort_by_attendance);
+
+  const worst_attend = sort_by_attendance.slice(-ten_percent);
+  const best_attend = sort_by_attendance.slice(0, Math.floor(ten_percent));
+  worst_attend.sort((a, b) => b.missed_votes - a.missed_votes);
+  best_attend.sort((a, b) => a.missed_votes - b.missed_votes);
+  // console.log(worst_attend);
+  // console.log(best_attend);
+  // const sort_by_attendance = _(attendance_list).sortBy(a => {
+  //   return [a.attendance, a.attendance];
+  // });
 
   // ------------- create table ------------------
 
-  const categories = ["Name", "Attendance", "No. Missed Votes", "% Missed"];
+  const categories = ["Name", "No. Missed Votes", "% Missed"];
 
   const table_elements = create_table_head_and_body_bY_lucation(
     location_by_id,
@@ -124,47 +151,42 @@ const create_attendance_table = (location_by_id, members, attend) => {
   const tblHead = table_elements.tblhead;
   const tblBody = table_elements.tblbody;
 
-  const list_length = sort_by_attendance.length;
-  const ten_percent = list_length * 0.1;
-
   if (attend == "worst") {
-    for (let i = 0; i <= ten_percent; i++) {
-      // console.log(i);
+    for (member of worst_attend) {
+      // console.log(member);
       const tblRow = document.createElement("tr");
       const tblCell_name = document.createElement("td");
-      const tblCell_atten = document.createElement("td");
+      // const tblCell_atten = document.createElement("td");
       const tblCell_missed_votes = document.createElement("td");
       const tblCell_missed_pct = document.createElement("td");
 
-      tblCell_name.innerHTML = sort_by_attendance[i].name;
-      tblCell_atten.innerHTML = sort_by_attendance[i].attendance;
-      console.log(sort_by_attendance[i].attendance);
-      tblCell_missed_votes.innerHTML = sort_by_attendance[i].missed_votes;
-      tblCell_missed_pct.innerHTML = sort_by_attendance[i].missed_pct;
+      tblCell_name.innerHTML = member.name;
+      // tblCell_atten.innerHTML = member.attendance;
+      tblCell_missed_votes.innerHTML = member.missed_votes;
+      tblCell_missed_pct.innerHTML = member.missed_pct;
 
       tblRow.appendChild(tblCell_name);
-      tblRow.appendChild(tblCell_atten);
+      // tblRow.appendChild(tblCell_atten);
       tblRow.appendChild(tblCell_missed_votes);
       tblRow.appendChild(tblCell_missed_pct);
       tblBody.appendChild(tblRow);
     }
   } else if (attend == "best") {
-    for (let i = list_length - 1; i >= list_length - ten_percent; i--) {
-      // console.log(i);
+    for (member of best_attend) {
+      // console.log(member);
       const tblRow = document.createElement("tr");
       const tblCell_name = document.createElement("td");
-      const tblCell_atten = document.createElement("td");
+      // const tblCell_atten = document.createElement("td");
       const tblCell_missed_votes = document.createElement("td");
       const tblCell_missed_pct = document.createElement("td");
 
-      tblCell_name.innerHTML = sort_by_attendance[i].name;
-      tblCell_atten.innerHTML = sort_by_attendance[i].attendance;
-      console.log(sort_by_attendance[i].attendance);
-      tblCell_missed_votes.innerHTML = sort_by_attendance[i].missed_votes;
-      tblCell_missed_pct.innerHTML = sort_by_attendance[i].missed_pct;
+      tblCell_name.innerHTML = member.name;
+      // tblCell_atten.innerHTML = member.attendance;
+      tblCell_missed_votes.innerHTML = member.missed_votes;
+      tblCell_missed_pct.innerHTML = member.missed_pct;
 
       tblRow.appendChild(tblCell_name);
-      tblRow.appendChild(tblCell_atten);
+      // tblRow.appendChild(tblCell_atten);
       tblRow.appendChild(tblCell_missed_votes);
       tblRow.appendChild(tblCell_missed_pct);
       tblBody.appendChild(tblRow);
@@ -173,6 +195,6 @@ const create_attendance_table = (location_by_id, members, attend) => {
 };
 
 if (document.title == "Senate Attendance") {
-  create_attendance_table("attend-worst-table", members_data, "worst");
-  create_attendance_table("attend-best-table", members_data, "best");
+  create_attendance_or_mi_table("attend-worst-table", members_data, "worst");
+  create_attendance_or_mi_table("attend-best-table", members_data, "best");
 }
