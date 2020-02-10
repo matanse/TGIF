@@ -77,11 +77,7 @@ if (document.title == "House Data") {
   create_members_table("senate-data", members_data);
 }
 
-const create_attendance_or_mi_table = (
-  location_by_id,
-  members_list,
-  attend
-) => {
+const create_attendance_table = (location_by_id, members_list, attend) => {
   const attendance_list = [];
 
   for (member of members_list) {
@@ -171,8 +167,97 @@ const create_attendance_or_mi_table = (
   }
 };
 
+const loyalty_table = (location_by_id, members_list, loyalty) => {
+  const loyalty_list = [];
+
+  for (member of members_list) {
+    if (member.middle_name == null) {
+      const num_votes_with_party =
+        (member.total_votes / 100) * member.votes_with_party_pct;
+
+      attendance_list.push({
+        name: `${member.first_name} ${member.last_name}`,
+        numnum_votes_with_party: num_votes_with_party,
+        party_pct: member.votes_with_party_pct,
+        url: member.url
+      });
+    } else {
+      attendance_list.push({
+        name: `${member.first_name} ${member.middle_name} ${member.last_name}`,
+        numnum_votes_with_party: num_votes_with_party,
+        party_pct: member.votes_with_party_pct,
+        url: member.url
+      });
+    }
+  }
+  const sort_by_loyalty = loyalty_list.sort((a, b) => {
+    return b.party_pct - a.party_pct;
+  });
+
+  const list_length = sort_by_loyalty.length;
+  const ten_percent = list_length * 0.1;
+
+  const worst_loyal = sort_by_loyalty.slice(-ten_percent);
+  const best_loyal = sort_by_loyalty.slice(0, Math.floor(ten_percent));
+
+  // ------------- create table missed ------------------
+
+  const categories = ["Name", "No. Missed Votes", "% Missed"];
+
+  const table_elements = create_table_head_and_body_bY_lucation(
+    location_by_id,
+    categories
+  );
+  const tblHead = table_elements.tblhead;
+  const tblBody = table_elements.tblbody;
+
+  if (loyalty == "worst") {
+    for (member of worst_loyal) {
+      const tblRow = document.createElement("tr");
+      const tblCell_name = document.createElement("td");
+      const tblCell_missed_votes = document.createElement("td");
+      const tblCell_missed_pct = document.createElement("td");
+
+      const tblName_to_website = document.createElement("a");
+      tblName_to_website.setAttribute("href", `"${member.url}"`);
+      tblName_to_website.setAttribute("target", "_blank");
+
+      tblName_to_website.innerHTML = member.name;
+      tblCell_missed_votes.innerHTML = member.missed_votes;
+      tblCell_missed_pct.innerHTML = member.missed_pct;
+
+      tblCell_name.appendChild(tblName_to_website);
+      tblRow.appendChild(tblCell_name);
+      tblRow.appendChild(tblCell_missed_votes);
+      tblRow.appendChild(tblCell_missed_pct);
+      tblBody.appendChild(tblRow);
+    }
+  } else if (loyalty == "best") {
+    for (member of best_loyal) {
+      const tblRow = document.createElement("tr");
+      const tblCell_name = document.createElement("td");
+      const tblCell_missed_votes = document.createElement("td");
+      const tblCell_missed_pct = document.createElement("td");
+
+      const tblName_to_website = document.createElement("a");
+      tblName_to_website.setAttribute("href", `"${member.url}"`);
+      tblName_to_website.setAttribute("target", "_blank");
+
+      tblName_to_website.innerHTML = member.name;
+      tblCell_missed_votes.innerHTML = member.missed_votes;
+      tblCell_missed_pct.innerHTML = member.missed_pct;
+
+      tblCell_name.appendChild(tblName_to_website);
+      tblRow.appendChild(tblCell_name);
+      tblRow.appendChild(tblCell_missed_votes);
+      tblRow.appendChild(tblCell_missed_pct);
+      tblBody.appendChild(tblRow);
+    }
+  }
+};
+
 const at_a_glance_table = (location_by_id, members_list) => {
-  let members_parties = {
+  var members_parties = {
     D: {
       name: "Democrats",
       count: 0,
@@ -251,11 +336,11 @@ const at_a_glance_table = (location_by_id, members_list) => {
 };
 
 if (document.title == "Senate Attendance") {
-  create_attendance_or_mi_table("attend-worst-table", members_data, "worst");
-  create_attendance_or_mi_table("attend-best-table", members_data, "best");
+  create_attendance_table("attend-worst-table", members_data, "worst");
+  create_attendance_table("attend-best-table", members_data, "best");
   at_a_glance_table("at-glance", members_data);
 } else if (document.title == "House Attendance") {
-  create_attendance_or_mi_table("attend-worst-table", members_data, "worst");
-  create_attendance_or_mi_table("attend-best-table", members_data, "best");
+  create_attendance_table("loyal-worst-table", members_data, "worst");
+  create_attendance_table("loyal-best-table", members_data, "best");
   at_a_glance_table("at-glance", members_data);
 }

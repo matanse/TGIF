@@ -11,7 +11,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="../../css/style.css" />
-    <title>Senate Attendance</title>
+    <title>House Attendance</title>
   </head>
 
   <body>
@@ -74,8 +74,8 @@
               >Attendance</a
             >
             <div class="dropdown-menu">
-              <a class="dropdown-item">Senate</a>
-              <a class="dropdown-item" href="House Attendance.html">House</a>
+              <a class="dropdown-item" href="Senate Attendance.html">Senate</a>
+              <a class="dropdown-item">House</a>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -89,9 +89,7 @@
               >Party Loyalty</a
             >
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="../HTML/senate-data.html"
-                >Senate</a
-              >
+              <a class="dropdown-item" href="Senate loyalty.html">Senate</a>
               <a class="dropdown-item" href="house page.html">House</a>
             </div>
           </li>
@@ -124,7 +122,7 @@
         <div class="col-sm-6">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Senate at a glance</h5>
+              <h5 class="card-title">House at a glance</h5>
               <p class="card-text" id="at-glance"></p>
             </div>
           </div>
@@ -134,16 +132,16 @@
         <div class="col-sm-6">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Least Engaged (Bottom 10% Attendance)</h5>
-              <p class="card-text" id="attend-worst-table"></p>
+              <h5 class="card-title">Least Loyal (Bottom 10% of Party)</h5>
+              <p class="card-text" id="loyal-worst-table"></p>
             </div>
           </div>
         </div>
         <div class="col-sm-6">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Most Engaged (Top 10% Attendance)</h5>
-              <p class="card-text" id="attend-best-table"></p>
+              <h5 class="card-title">Most Loyal (Top 10% of Party)</h5>
+              <p class="card-text" id="loyal-best-table"></p>
             </div>
           </div>
         </div>
@@ -172,7 +170,7 @@
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
       crossorigin="anonymous"
     ></script>
-    <script src="../../JS/json senate.js"></script>
+    <script src="../../JS/json-house.js"></script>
     <script src="../../JS/main.js"></script>
   </body>
 </html>
