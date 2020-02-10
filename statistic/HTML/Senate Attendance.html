@@ -98,25 +98,40 @@
         </ul>
       </nav>
 
-        <div class="row">
-            <div class="col">
-            1 of 3
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Worst attendance</h5>
+              <p class="card-text"></p>
             </div>
-            <div class="col-6">
-            2 of 3 (wider)
-            </div>
-            <div class="col">
-            3 of 3
-            </div>
+          </div>
         </div>
-        <div class="row">
-            <div class="col">
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">At a glance</h5>
+              <p class="card-text" id="at-glance"></p>
             </div>
-            <div class="col-5" id="attend-best-table"><h4>Best attendance</h4>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Worst attendance</h5>
+              <p class="card-text" id="attend-worst-table"></p>
             </div>
-            <div class="col" id="attend-worst-table"><h4>Worst attendance</h4>
-                
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Best attendance</h5>
+              <p class="card-text" id="attend-best-table"></p>
             </div>
+          </div>
         </div>
       </div>
       <footer class="page-footer font-small blue fixed-bottom">
@@ -144,7 +159,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="../../JS/json senate.js"></script>
-    <script src="../../underscore.js"></script>
     <script src="../../JS/main.js"></script>
   </body>
 </html>
