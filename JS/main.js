@@ -186,7 +186,6 @@ const at_a_glance_table = (location_by_id, members_list) => {
     members_parties[3].votes_with_party_pct +=
       members_list[member].votes_with_party_pct;
     if (members_list[member].party == "D") {
-      console.log(1);
       members_parties[0].count += 1;
       members_parties[0].votes_with_party_pct +=
         members_list[member].votes_with_party_pct;
@@ -201,9 +200,7 @@ const at_a_glance_table = (location_by_id, members_list) => {
     }
   }
   // --------------------- create table at a glance --------
-  for (party of members_parties) {
-    console.log(party);
-  }
+
   const categories = ["Party", "No. of Reps", "% Voted w/ Party"];
 
   const table_elements = create_table_head_and_body_bY_lucation(
