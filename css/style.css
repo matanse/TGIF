@@ -55,6 +55,6 @@ footer > div > a:last-child {
   border-radius: 10px;
 }
 
-/* #attend-best-table {
-  width: 30vw;
-} */
+.card {
+  border: none;
+}
