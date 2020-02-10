@@ -42,9 +42,11 @@ const create_members_table = (location_by_id, members_list) => {
   for (member of members_list) {
     const tblRow = document.createElement("tr");
     const tblCell_name = document.createElement("td");
+
     const tblName_to_website = document.createElement("a");
     tblName_to_website.setAttribute("href", `"${member.url}"`);
     tblName_to_website.setAttribute("target", "_blank");
+
     const tblCell_party = document.createElement("td");
     const tblCell_state = document.createElement("td");
     const tblCell_seniority = document.createElement("td");
@@ -88,14 +90,16 @@ const create_attendance_or_mi_table = (
         name: `${member.first_name} ${member.last_name}`,
         missed_votes: member.missed_votes,
         missed_pct: member.missed_votes_pct,
-        attendance: member.total_present
+        attendance: member.total_present,
+        url: member.url
       });
     } else {
       attendance_list.push({
         name: `${member.first_name} ${member.middle_name} ${member.last_name}`,
         missed_votes: member.missed_votes,
         missed_pct: member.missed_votes_pct,
-        attendance: member.total_present
+        attendance: member.total_present,
+        url: member.url
       });
     }
   }
@@ -129,10 +133,15 @@ const create_attendance_or_mi_table = (
       const tblCell_missed_votes = document.createElement("td");
       const tblCell_missed_pct = document.createElement("td");
 
-      tblCell_name.innerHTML = member.name;
+      const tblName_to_website = document.createElement("a");
+      tblName_to_website.setAttribute("href", `"${member.url}"`);
+      tblName_to_website.setAttribute("target", "_blank");
+
+      tblName_to_website.innerHTML = member.name;
       tblCell_missed_votes.innerHTML = member.missed_votes;
       tblCell_missed_pct.innerHTML = member.missed_pct;
 
+      tblCell_name.appendChild(tblName_to_website);
       tblRow.appendChild(tblCell_name);
       tblRow.appendChild(tblCell_missed_votes);
       tblRow.appendChild(tblCell_missed_pct);
@@ -145,10 +154,15 @@ const create_attendance_or_mi_table = (
       const tblCell_missed_votes = document.createElement("td");
       const tblCell_missed_pct = document.createElement("td");
 
-      tblCell_name.innerHTML = member.name;
+      const tblName_to_website = document.createElement("a");
+      tblName_to_website.setAttribute("href", `"${member.url}"`);
+      tblName_to_website.setAttribute("target", "_blank");
+
+      tblName_to_website.innerHTML = member.name;
       tblCell_missed_votes.innerHTML = member.missed_votes;
       tblCell_missed_pct.innerHTML = member.missed_pct;
 
+      tblCell_name.appendChild(tblName_to_website);
       tblRow.appendChild(tblCell_name);
       tblRow.appendChild(tblCell_missed_votes);
       tblRow.appendChild(tblCell_missed_pct);
@@ -217,9 +231,14 @@ const at_a_glance_table = (location_by_id, members_list) => {
     const tblCell_votes_with_party_pct = document.createElement("td");
 
     tblCell_party.innerHTML = party.name;
-    tblCell_rep.innerHTML = party.count;
-    tblCell_votes_with_party_pct.innerHTML =
-      Math.round((party.votes_with_party_pct / party.count) * 10) / 10;
+    if (party.count != 0) {
+      tblCell_rep.innerHTML = party.count;
+      tblCell_votes_with_party_pct.innerHTML =
+        Math.round((party.votes_with_party_pct / party.count) * 10) / 10;
+    } else {
+      tblCell_rep.innerHTML = 0;
+      tblCell_votes_with_party_pct.innerHTML = 0;
+    }
 
     tblBody.appendChild(tblRow);
     tblRow.appendChild(tblCell_party);
@@ -229,6 +248,10 @@ const at_a_glance_table = (location_by_id, members_list) => {
 };
 
 if (document.title == "Senate Attendance") {
+  create_attendance_or_mi_table("attend-worst-table", members_data, "worst");
+  create_attendance_or_mi_table("attend-best-table", members_data, "best");
+  at_a_glance_table("at-glance", members_data);
+} else if (document.title == "House Attendance") {
   create_attendance_or_mi_table("attend-worst-table", members_data, "worst");
   create_attendance_or_mi_table("attend-best-table", members_data, "best");
   at_a_glance_table("at-glance", members_data);
