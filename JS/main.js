@@ -172,44 +172,43 @@ const create_attendance_or_mi_table = (
 };
 
 const at_a_glance_table = (location_by_id, members_list) => {
-  let members_parties = [
-    {
+  let members_parties = {
+    D: {
       name: "Democrats",
       count: 0,
       votes_with_party_pct: 0
     },
-    {
+    R: {
       name: "Replubicans",
       count: 0,
       votes_with_party_pct: 0
     },
-    {
+    I: {
       name: "Independents",
       count: 0,
       votes_with_party_pct: 0
     },
-    {
+    Total: {
       name: "Total",
       count: 0,
       votes_with_party_pct: 0
     }
-  ];
-
+  };
   for (member in members_list) {
-    members_parties[3].count += 1;
-    members_parties[3].votes_with_party_pct +=
+    members_parties.Total.count += 1;
+    members_parties.Total.votes_with_party_pct +=
       members_list[member].votes_with_party_pct;
     if (members_list[member].party == "D") {
-      members_parties[0].count += 1;
-      members_parties[0].votes_with_party_pct +=
+      members_parties.D.count += 1;
+      members_parties.D.votes_with_party_pct +=
         members_list[member].votes_with_party_pct;
     } else if (members_list[member].party == "R") {
-      members_parties[1].count += 1;
-      members_parties[1].votes_with_party_pct +=
+      members_parties.R.count += 1;
+      members_parties.R.votes_with_party_pct +=
         members_list[member].votes_with_party_pct;
     } else {
-      members_parties[2].count += 1;
-      members_parties[2].votes_with_party_pct +=
+      members_parties.I.count += 1;
+      members_parties.I.votes_with_party_pct +=
         members_list[member].votes_with_party_pct;
     }
   }
@@ -224,17 +223,21 @@ const at_a_glance_table = (location_by_id, members_list) => {
   const tblHead = table_elements.tblhead;
   const tblBody = table_elements.tblbody;
 
-  for (party of members_parties) {
+  for (party in members_parties) {
     const tblRow = document.createElement("tr");
     const tblCell_party = document.createElement("td");
     const tblCell_rep = document.createElement("td");
     const tblCell_votes_with_party_pct = document.createElement("td");
 
-    tblCell_party.innerHTML = party.name;
-    if (party.count != 0) {
-      tblCell_rep.innerHTML = party.count;
+    tblCell_party.innerHTML = members_parties[party].name;
+    if (members_parties[party].count != 0) {
+      tblCell_rep.innerHTML = members_parties[party].count;
       tblCell_votes_with_party_pct.innerHTML =
-        Math.round((party.votes_with_party_pct / party.count) * 10) / 10;
+        Math.round(
+          (members_parties[party].votes_with_party_pct /
+            members_parties[party].count) *
+            10
+        ) / 10;
     } else {
       tblCell_rep.innerHTML = 0;
       tblCell_votes_with_party_pct.innerHTML = 0;
