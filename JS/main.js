@@ -335,11 +335,11 @@ const at_a_glance_table = (location_by_id, members_list) => {
   }
 };
 
-if (document.title == "Senate Attendance") {
+if (document.title == "Attendance") {
   create_attendance_table("attend-worst-table", members_data, "worst");
   create_attendance_table("attend-best-table", members_data, "best");
   at_a_glance_table("at-glance", members_data);
-} else if (document.title == "House Attendance") {
+} else if (document.title == "Loyalty") {
   create_attendance_table("loyal-worst-table", members_data, "worst");
   create_attendance_table("loyal-best-table", members_data, "best");
   at_a_glance_table("at-glance", members_data);
