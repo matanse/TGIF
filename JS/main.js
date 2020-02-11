@@ -1,4 +1,4 @@
-const members_data = data.results[0].members;
+// ---------------- functions    -------------
 
 const create_table_head_and_body_bY_lucation = (location_by_id, col_list) => {
   const tblLocation = document.getElementById(location_by_id);
@@ -71,12 +71,6 @@ const create_members_table = (location_by_id, members_list) => {
   }
 };
 
-if (document.title == "House Data") {
-  create_members_table("house-data", members_data);
-} else if (document.title == "Senate Data") {
-  create_members_table("senate-data", members_data);
-}
-
 const create_attendance_table = (location_by_id, members_list, attend) => {
   const attendance_list = [];
 
@@ -84,6 +78,7 @@ const create_attendance_table = (location_by_id, members_list, attend) => {
     if (member.middle_name == null) {
       attendance_list.push({
         name: `${member.first_name} ${member.last_name}`,
+        party: member.party,
         missed_votes: member.missed_votes,
         missed_pct: member.missed_votes_pct,
         attendance: member.total_present,
@@ -92,6 +87,7 @@ const create_attendance_table = (location_by_id, members_list, attend) => {
     } else {
       attendance_list.push({
         name: `${member.first_name} ${member.middle_name} ${member.last_name}`,
+        party: member.party,
         missed_votes: member.missed_votes,
         missed_pct: member.missed_votes_pct,
         attendance: member.total_present,
@@ -111,7 +107,7 @@ const create_attendance_table = (location_by_id, members_list, attend) => {
   worst_attend.sort((a, b) => b.missed_votes - a.missed_votes);
   best_attend.sort((a, b) => a.missed_votes - b.missed_votes);
 
-  // ------------- create table missed ------------------
+  // -------- create table missed -------------
 
   const categories = ["Name", "No. Missed Votes", "% Missed"];
 
@@ -167,24 +163,26 @@ const create_attendance_table = (location_by_id, members_list, attend) => {
   }
 };
 
-const loyalty_table = (location_by_id, members_list, loyalty) => {
+const create_loyalty_table = (location_by_id, members_list, loyalty) => {
   const loyalty_list = [];
 
   for (member of members_list) {
+    const num_votes_with_party = Math.round(
+      (member.total_votes / 100) * member.votes_with_party_pct
+    );
     if (member.middle_name == null) {
-      const num_votes_with_party =
-        (member.total_votes / 100) * member.votes_with_party_pct;
-
-      attendance_list.push({
+      loyalty_list.push({
         name: `${member.first_name} ${member.last_name}`,
-        numnum_votes_with_party: num_votes_with_party,
+        party: member.party,
+        num_votes_with_party: num_votes_with_party,
         party_pct: member.votes_with_party_pct,
         url: member.url
       });
     } else {
-      attendance_list.push({
+      loyalty_list.push({
         name: `${member.first_name} ${member.middle_name} ${member.last_name}`,
-        numnum_votes_with_party: num_votes_with_party,
+        party: member.party,
+        num_votes_with_party: num_votes_with_party,
         party_pct: member.votes_with_party_pct,
         url: member.url
       });
@@ -200,9 +198,8 @@ const loyalty_table = (location_by_id, members_list, loyalty) => {
   const worst_loyal = sort_by_loyalty.slice(-ten_percent);
   const best_loyal = sort_by_loyalty.slice(0, Math.floor(ten_percent));
 
-  // ------------- create table missed ------------------
-
-  const categories = ["Name", "No. Missed Votes", "% Missed"];
+  // --------- create table missed ------
+  const categories = ["Name", "No. Party Votes", "% Party Votes"];
 
   const table_elements = create_table_head_and_body_bY_lucation(
     location_by_id,
@@ -215,42 +212,42 @@ const loyalty_table = (location_by_id, members_list, loyalty) => {
     for (member of worst_loyal) {
       const tblRow = document.createElement("tr");
       const tblCell_name = document.createElement("td");
-      const tblCell_missed_votes = document.createElement("td");
-      const tblCell_missed_pct = document.createElement("td");
+      const tblCell_with_party_votes = document.createElement("td");
+      const tblCell_party_votes_pct = document.createElement("td");
 
       const tblName_to_website = document.createElement("a");
       tblName_to_website.setAttribute("href", `"${member.url}"`);
       tblName_to_website.setAttribute("target", "_blank");
 
       tblName_to_website.innerHTML = member.name;
-      tblCell_missed_votes.innerHTML = member.missed_votes;
-      tblCell_missed_pct.innerHTML = member.missed_pct;
+      tblCell_with_party_votes.innerHTML = member.num_votes_with_party;
+      tblCell_party_votes_pct.innerHTML = member.party_pct;
 
       tblCell_name.appendChild(tblName_to_website);
       tblRow.appendChild(tblCell_name);
-      tblRow.appendChild(tblCell_missed_votes);
-      tblRow.appendChild(tblCell_missed_pct);
+      tblRow.appendChild(tblCell_with_party_votes);
+      tblRow.appendChild(tblCell_party_votes_pct);
       tblBody.appendChild(tblRow);
     }
   } else if (loyalty == "best") {
     for (member of best_loyal) {
       const tblRow = document.createElement("tr");
       const tblCell_name = document.createElement("td");
-      const tblCell_missed_votes = document.createElement("td");
-      const tblCell_missed_pct = document.createElement("td");
+      const tblCell_with_party_votes = document.createElement("td");
+      const tblCell_party_votes_pct = document.createElement("td");
 
       const tblName_to_website = document.createElement("a");
       tblName_to_website.setAttribute("href", `"${member.url}"`);
       tblName_to_website.setAttribute("target", "_blank");
 
       tblName_to_website.innerHTML = member.name;
-      tblCell_missed_votes.innerHTML = member.missed_votes;
-      tblCell_missed_pct.innerHTML = member.missed_pct;
+      tblCell_with_party_votes.innerHTML = member.num_votes_with_party;
+      tblCell_party_votes_pct.innerHTML = member.party_pct;
 
       tblCell_name.appendChild(tblName_to_website);
       tblRow.appendChild(tblCell_name);
-      tblRow.appendChild(tblCell_missed_votes);
-      tblRow.appendChild(tblCell_missed_pct);
+      tblRow.appendChild(tblCell_with_party_votes);
+      tblRow.appendChild(tblCell_party_votes_pct);
       tblBody.appendChild(tblRow);
     }
   }
@@ -297,7 +294,7 @@ const at_a_glance_table = (location_by_id, members_list) => {
         members_list[member].votes_with_party_pct;
     }
   }
-  // --------------------- create table at a glance --------
+  // --------- create table at a glance --------
 
   const categories = ["Party", "No. of Reps", "% Voted w/ Party"];
 
@@ -335,12 +332,39 @@ const at_a_glance_table = (location_by_id, members_list) => {
   }
 };
 
+// ----------------------------  functions end --------------------------
+
+const members_data = data.results[0].members;
+
+// -------- functions calls ----------------
+
 if (document.title == "Attendance") {
   create_attendance_table("attend-worst-table", members_data, "worst");
   create_attendance_table("attend-best-table", members_data, "best");
   at_a_glance_table("at-glance", members_data);
 } else if (document.title == "Loyalty") {
-  create_attendance_table("loyal-worst-table", members_data, "worst");
-  create_attendance_table("loyal-best-table", members_data, "best");
+  create_loyalty_table("loyal-worst-table", members_data, "worst");
+  create_loyalty_table("loyal-best-table", members_data, "best");
   at_a_glance_table("at-glance", members_data);
 }
+
+if (document.title == "House Data") {
+  create_members_table("house-data", members_data);
+} else if (document.title == "Senate Data") {
+  create_members_table("senate-data", members_data);
+}
+
+// const filters = () => {};
+// const hey = p => {
+//   console.log(p);
+// };
+// let d = document.getElementById("CheckboxDemocrats");
+// d.addEventListener("change", () => {
+//   if (d.checked) {
+//     hey(d.value);
+//   } else {
+//     hey(2);
+//   }
+// });
+// document.getElementById("CheckboxReplubicans").addEventListener("change", hey);
+// document.getElementById("CheckboxIndependents").addEventListener("change", hey);
