@@ -42,6 +42,7 @@ const create_state_menu = () => {
     in_put.setAttribute("type", "checkbox");
     in_put.setAttribute("value", state);
     in_put.setAttribute("id", state);
+    in_put.setAttribute("name", "state");
     lebl.innerHTML = " " + state + " ";
 
     state_menu_location.appendChild(line);
@@ -76,20 +77,23 @@ document
   });
 
 const checked_filters_values = () => {
-  let selectedBoxes = [];
-  let selected_parties = document.querySelectorAll(
-    "input[type=checkbox]:checked"
-  );
+  let selectedBoxes = {
+    party: [],
+    states: []
+  };
+  let selected_parties = document.querySelectorAll("input[name=party]:checked");
+  let selected_states = document.querySelectorAll("input[name=state]:checked");
   for (i = 0; i < selected_parties.length; i++) {
-    selectedBoxes.push(selected_parties[i].value);
+    selectedBoxes.party.push(selected_parties[i].value);
   }
-  console.log(selectedBoxes);
+  for (i = 0; i < selected_states.length; i++) {
+    selectedBoxes.states.push(selected_states[i].value);
+  }
   return selectedBoxes;
 };
 
 const create_members_table = (location_by_id, members_list) => {
   const filters_values = checked_filters_values();
-
   const categories = [
     "Full Name",
     "Party",
@@ -107,9 +111,13 @@ const create_members_table = (location_by_id, members_list) => {
 
   for (member of members_list) {
     if (
-      (filters_values.includes(member.party) &&
-        filters_values.includes(member.state)) ||
-      filters_values.length == 0
+      (filters_values.party.includes(member.party) &&
+        filters_values.states.length == 0) ||
+      (filters_values.states.includes(member.state) &&
+        filters_values.party.length == 0) ||
+      (filters_values.states.includes(member.state) &&
+        filters_values.party.includes(member.party)) ||
+      (filters_values.party.length == 0 && filters_values.states.length == 0)
     ) {
       const tblRow = document.createElement("tr");
       const tblCell_name = document.createElement("td");
