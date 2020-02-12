@@ -94,10 +94,16 @@
               >Party Loyalty</a
             >
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="../statistic/HTML/Senate loyalty.html"
+              <a
+                class="dropdown-item"
+                href="../statistic/HTML/Senate loyalty.html"
                 >Senate</a
               >
-              <a class="dropdown-item" href="../statistic/HTML/House loyalty.html">House</a>
+              <a
+                class="dropdown-item"
+                href="../statistic/HTML/House loyalty.html"
+                >House</a
+              >
             </div>
           </li>
         </ul>
@@ -122,7 +128,7 @@
           population as measured in the census, but every state is entitled to
           at least one representative.
         </p>
-        <label for="filterParty">Apply filter:
+        <label for="filterParty">Apply filter:</label>
         <div class="form-check form-check-inline" id="filterParty">
           <input
             class="form-check-input"
@@ -131,7 +137,8 @@
             value="D"
           />
           <label class="form-check-label" for="CheckboxDemocrats"
-            >Democrats</label>
+            >Democrats</label
+          >
         </div>
         <div class="form-check form-check-inline">
           <input
@@ -141,7 +148,8 @@
             value="R"
           />
           <label class="form-check-label" for="CheckboxReplubicans"
-            >Replubicans</label>
+            >Replubicans</label
+          >
         </div>
         <div class="form-check form-check-inline">
           <input
@@ -151,7 +159,19 @@
             value="I"
           />
           <label class="form-check-label" for="CheckboxIndependents"
-            >Independents</label>
+            >Independents</label
+          >
+          <button type="button" class="btn btn-default dropdown-toggle" 
+          data-toggle="dropdown">State<span class="caret"></span>
+          </button>
+            <!-- modal -->
+            <ul
+              class="dropdown-menu scrollable-menu"
+              role="menu"
+              id="state-menu-dropdown"
+            >
+            </ul>
+          </span>
         </div>
         <div id="house-data"></div>
       </div>

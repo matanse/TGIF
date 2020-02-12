@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>House Data</title>
+  </head>
+  <body>
+    <label for="filterParty">Apply filter:</label>
+    <div class="form-check form-check-inline" id="filterParty">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        id="CheckboxDemocrats"
+        value="D"
+      />
+      <label class="form-check-label" for="CheckboxDemocrats">Democrats</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        id="CheckboxReplubicans"
+        value="R"
+      />
+      <label class="form-check-label" for="CheckboxReplubicans"
+        >Replubicans</label
+      >
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        id="CheckboxIndependents"
+        value="I"
+      />
+      <label class="form-check-label" for="CheckboxIndependents"
+        >Independents</label
+      >
+    </div>
+    <div id="house-data"></div>
+    <script src="../JS/json-house.js"></script>
+    <script src="../JS/main.js"></script>
+  </body>
+</html>

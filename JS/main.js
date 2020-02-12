@@ -1,7 +1,10 @@
+const members_data = data.results[0].members;
+
 // ---------------- functions    -------------
 
 const create_table_head_and_body_bY_lucation = (location_by_id, col_list) => {
   const tblLocation = document.getElementById(location_by_id);
+  tblLocation.innerHTML = "";
   const tbl = document.createElement("table");
   const tblHead = document.createElement("thead");
   const tblBody = document.createElement("tbody");
@@ -23,7 +26,70 @@ const create_table_head_and_body_bY_lucation = (location_by_id, col_list) => {
   return table_elemnts;
 };
 
+const create_state_menu = () => {
+  const states = [];
+  for (member of members_data) {
+    if (states.includes(member.state) != true) {
+      states.push(member.state);
+    }
+  }
+  const state_menu_location = document.getElementById("state-menu-dropdown");
+  for (state of states) {
+    const line = document.createElement("li");
+    line.setAttribute("class", "checkbox keep-open");
+    const lebl = document.createElement("label");
+    const in_put = document.createElement("input");
+    in_put.setAttribute("type", "checkbox");
+    in_put.setAttribute("value", state);
+    in_put.setAttribute("id", state);
+    lebl.innerHTML = " " + state + " ";
+
+    state_menu_location.appendChild(line);
+    line.appendChild(lebl);
+    lebl.appendChild(in_put);
+
+    document.getElementById(state).addEventListener("change", function() {
+      create_members_table("house-data", members_data);
+    });
+  }
+};
+
+document
+  .getElementById("CheckboxDemocrats")
+  .addEventListener("change", function() {
+    create_members_table("house-data", members_data);
+  });
+document
+  .getElementById("CheckboxReplubicans")
+  .addEventListener("change", function() {
+    create_members_table("house-data", members_data);
+  });
+document
+  .getElementById("CheckboxIndependents")
+  .addEventListener("change", function() {
+    create_members_table("house-data", members_data);
+  });
+document
+  .getElementById("state-menu-dropdown")
+  .addEventListener("change", function() {
+    create_state_menu();
+  });
+
+const checked_filters_values = () => {
+  let selectedBoxes = [];
+  let selected_parties = document.querySelectorAll(
+    "input[type=checkbox]:checked"
+  );
+  for (i = 0; i < selected_parties.length; i++) {
+    selectedBoxes.push(selected_parties[i].value);
+  }
+  console.log(selectedBoxes);
+  return selectedBoxes;
+};
+
 const create_members_table = (location_by_id, members_list) => {
+  const filters_values = checked_filters_values();
+
   const categories = [
     "Full Name",
     "Party",
@@ -40,59 +106,68 @@ const create_members_table = (location_by_id, members_list) => {
   const tblBody = table_elements.tblbody;
 
   for (member of members_list) {
-    const tblRow = document.createElement("tr");
-    const tblCell_name = document.createElement("td");
+    if (
+      (filters_values.includes(member.party) &&
+        filters_values.includes(member.state)) ||
+      filters_values.length == 0
+    ) {
+      const tblRow = document.createElement("tr");
+      const tblCell_name = document.createElement("td");
 
-    const tblName_to_website = document.createElement("a");
-    tblName_to_website.setAttribute("href", `"${member.url}"`);
-    tblName_to_website.setAttribute("target", "_blank");
+      const tblName_to_website = document.createElement("a");
+      tblName_to_website.setAttribute("href", `"${member.url}"`);
+      tblName_to_website.setAttribute("target", "_blank");
 
-    const tblCell_party = document.createElement("td");
-    const tblCell_state = document.createElement("td");
-    const tblCell_seniority = document.createElement("td");
-    const tblCell_votes_percentage = document.createElement("td");
-    if (member.middle_name == null) {
-      tblName_to_website.innerHTML = `${member.first_name} ${member.last_name}`;
-    } else {
-      tblName_to_website.innerHTML = `${member.first_name} ${member.middle_name} ${member.last_name}`;
+      const tblCell_party = document.createElement("td");
+      const tblCell_state = document.createElement("td");
+      const tblCell_seniority = document.createElement("td");
+      const tblCell_votes_percentage = document.createElement("td");
+      if (member.middle_name == null) {
+        tblName_to_website.innerHTML = `${member.first_name} ${member.last_name}`;
+      } else {
+        tblName_to_website.innerHTML = `${member.first_name} ${member.middle_name} ${member.last_name}`;
+      }
+      tblCell_party.innerHTML = member.party;
+      tblCell_state.innerHTML = member.state;
+      tblCell_seniority.innerHTML = member.seniority;
+      tblCell_votes_percentage.innerHTML = member.votes_with_party_pct;
+
+      tblCell_name.appendChild(tblName_to_website);
+      tblBody.appendChild(tblRow);
+      tblRow.appendChild(tblCell_name);
+      tblRow.appendChild(tblCell_party);
+      tblRow.appendChild(tblCell_state);
+      tblRow.appendChild(tblCell_seniority);
+      tblRow.appendChild(tblCell_votes_percentage);
     }
-    tblCell_party.innerHTML = member.party;
-    tblCell_state.innerHTML = member.state;
-    tblCell_seniority.innerHTML = member.seniority;
-    tblCell_votes_percentage.innerHTML = member.votes_with_party_pct;
-
-    tblCell_name.appendChild(tblName_to_website);
-    tblBody.appendChild(tblRow);
-    tblRow.appendChild(tblCell_name);
-    tblRow.appendChild(tblCell_party);
-    tblRow.appendChild(tblCell_state);
-    tblRow.appendChild(tblCell_seniority);
-    tblRow.appendChild(tblCell_votes_percentage);
   }
 };
 
 const create_attendance_table = (location_by_id, members_list, attend) => {
   const attendance_list = [];
+  const filters_values = checked_filters_values();
 
   for (member of members_list) {
-    if (member.middle_name == null) {
-      attendance_list.push({
-        name: `${member.first_name} ${member.last_name}`,
-        party: member.party,
-        missed_votes: member.missed_votes,
-        missed_pct: member.missed_votes_pct,
-        attendance: member.total_present,
-        url: member.url
-      });
-    } else {
-      attendance_list.push({
-        name: `${member.first_name} ${member.middle_name} ${member.last_name}`,
-        party: member.party,
-        missed_votes: member.missed_votes,
-        missed_pct: member.missed_votes_pct,
-        attendance: member.total_present,
-        url: member.url
-      });
+    if (filters_values.includes(member.party) || filters_values.length == 0) {
+      if (member.middle_name == null) {
+        attendance_list.push({
+          name: `${member.first_name} ${member.last_name}`,
+          party: member.party,
+          missed_votes: member.missed_votes,
+          missed_pct: member.missed_votes_pct,
+          attendance: member.total_present,
+          url: member.url
+        });
+      } else {
+        attendance_list.push({
+          name: `${member.first_name} ${member.middle_name} ${member.last_name}`,
+          party: member.party,
+          missed_votes: member.missed_votes,
+          missed_pct: member.missed_votes_pct,
+          attendance: member.total_present,
+          url: member.url
+        });
+      }
     }
   }
   const sort_by_attendance = attendance_list.sort((a, b) => {
@@ -167,25 +242,27 @@ const create_loyalty_table = (location_by_id, members_list, loyalty) => {
   const loyalty_list = [];
 
   for (member of members_list) {
-    const num_votes_with_party = Math.round(
-      (member.total_votes / 100) * member.votes_with_party_pct
-    );
-    if (member.middle_name == null) {
-      loyalty_list.push({
-        name: `${member.first_name} ${member.last_name}`,
-        party: member.party,
-        num_votes_with_party: num_votes_with_party,
-        party_pct: member.votes_with_party_pct,
-        url: member.url
-      });
-    } else {
-      loyalty_list.push({
-        name: `${member.first_name} ${member.middle_name} ${member.last_name}`,
-        party: member.party,
-        num_votes_with_party: num_votes_with_party,
-        party_pct: member.votes_with_party_pct,
-        url: member.url
-      });
+    if (filters_values.includes(member.party) || filters_values.length == 0) {
+      const num_votes_with_party = Math.round(
+        (member.total_votes / 100) * member.votes_with_party_pct
+      );
+      if (member.middle_name == null) {
+        loyalty_list.push({
+          name: `${member.first_name} ${member.last_name}`,
+          party: member.party,
+          num_votes_with_party: num_votes_with_party,
+          party_pct: member.votes_with_party_pct,
+          url: member.url
+        });
+      } else {
+        loyalty_list.push({
+          name: `${member.first_name} ${member.middle_name} ${member.last_name}`,
+          party: member.party,
+          num_votes_with_party: num_votes_with_party,
+          party_pct: member.votes_with_party_pct,
+          url: member.url
+        });
+      }
     }
   }
   const sort_by_loyalty = loyalty_list.sort((a, b) => {
@@ -334,9 +411,9 @@ const at_a_glance_table = (location_by_id, members_list) => {
 
 // ----------------------------  functions end --------------------------
 
-const members_data = data.results[0].members;
-
 // -------- functions calls ----------------
+
+create_state_menu();
 
 if (document.title == "Attendance") {
   create_attendance_table("attend-worst-table", members_data, "worst");
@@ -353,18 +430,3 @@ if (document.title == "House Data") {
 } else if (document.title == "Senate Data") {
   create_members_table("senate-data", members_data);
 }
-
-// const filters = () => {};
-// const hey = p => {
-//   console.log(p);
-// };
-// let d = document.getElementById("CheckboxDemocrats");
-// d.addEventListener("change", () => {
-//   if (d.checked) {
-//     hey(d.value);
-//   } else {
-//     hey(2);
-//   }
-// });
-// document.getElementById("CheckboxReplubicans").addEventListener("change", hey);
-// document.getElementById("CheckboxIndependents").addEventListener("change", hey);
