@@ -1,6 +1,34 @@
-const members_data = data.results[0].members;
-
 // ---------------- functions    -------------
+
+const fatch_json = () => {
+  if (document.title.includes("Senate")) {
+    fetch("https://api.propublica.org/congress/v1/113/senate/members.json", {
+      headers: {
+        "X-API-Key": "ZERZB6sQwFt0IQHJ9NIklUwqQMuPYsW6yBT8Fk4X"
+      }
+    })
+      .then(Response => Response.json())
+      .then(data => {
+        start_page(data);
+      })
+      .catch(error => {
+        console.log("Error:", error);
+      });
+  } else if (document.title.includes("House")) {
+    fetch("https://api.propublica.org/congress/v1/113/house/members.json", {
+      headers: {
+        "X-API-Key": "ZERZB6sQwFt0IQHJ9NIklUwqQMuPYsW6yBT8Fk4X"
+      }
+    })
+      .then(Response => Response.json())
+      .then(data => {
+        start_page(data);
+      })
+      .catch(error => {
+        console.log("Error:", error);
+      });
+  }
+};
 
 const create_table_head_and_body_bY_lucation = (location_by_id, col_list) => {
   const tblLocation = document.getElementById(location_by_id);
@@ -26,15 +54,20 @@ const create_table_head_and_body_bY_lucation = (location_by_id, col_list) => {
   return table_elemnts;
 };
 
-const create_state_menu = (location_by_id, members, quality = 0) => {
+const create_state_menu = (
+  table_location_id,
+  location_by_id,
+  members,
+  quality = 0
+) => {
   const states = [];
-  for (member of members_data) {
-    if (states.includes(member.state) != true) {
-      states.push(member.state);
+  for (member in members) {
+    if (states.includes(members[member].state) != true) {
+      states.push(members[member].state);
     }
-    states.sort();
   }
-  const state_menu_location = document.getElementById("state-menu-dropdown");
+  states.sort();
+  const state_menu_location = document.getElementById(location_by_id);
   for (state of states) {
     const line = document.createElement("li");
     line.setAttribute("class", "checkbox keep-open");
@@ -51,7 +84,23 @@ const create_state_menu = (location_by_id, members, quality = 0) => {
     lebl.appendChild(in_put);
 
     document.getElementById(state).addEventListener("change", function() {
-      create_members_table(location_by_id, members);
+      if (document.title == "Senate Data" || document.title == "House Data") {
+        create_members_table(table_location_id, members);
+      } else if (document.title.includes("Attendance")) {
+        create_attendance_table(
+          table_location_id,
+          location_by_id,
+          members,
+          quality
+        );
+      } else if (document.title.includes("Loyalty")) {
+        create_loyalty_table(
+          table_location_id,
+          location_by_id,
+          members,
+          quality
+        );
+      }
     });
   }
 };
@@ -62,10 +111,10 @@ function event_listeners(location_by_id, members, quality = 0) {
     .addEventListener("change", function() {
       if (document.title == "Senate Data" || document.title == "House Data") {
         create_members_table(location_by_id, members);
-      } else if (document.title == "Loyalty") {
+      } else if (document.title.includes("Loyalty")) {
         create_loyalty_table(location_by_id, members, quality);
         create_loyalty_table(location_by_id, members, quality);
-      } else if (document.title == "Attendance") {
+      } else if (document.title.includes("Attendance")) {
         create_attendance_table(location_by_id, members, quality);
         create_attendance_table(location_by_id, members, quality);
       }
@@ -75,10 +124,10 @@ function event_listeners(location_by_id, members, quality = 0) {
     .addEventListener("change", function() {
       if (document.title == "Senate Data" || document.title == "House Data") {
         create_members_table(location_by_id, members);
-      } else if (document.title == "Loyalty") {
+      } else if (document.title.includes("Loyalty")) {
         create_loyalty_table(location_by_id, members, quality);
         create_loyalty_table(location_by_id, members, quality);
-      } else if (document.title == "Attendance") {
+      } else if (document.title.includes("Attendance")) {
         create_attendance_table(location_by_id, members, quality);
         create_attendance_table(location_by_id, members, quality);
       }
@@ -88,10 +137,10 @@ function event_listeners(location_by_id, members, quality = 0) {
     .addEventListener("change", function() {
       if (document.title == "Senate Data" || document.title == "House Data") {
         create_members_table(location_by_id, members);
-      } else if (document.title == "Loyalty") {
+      } else if (document.title.includes("Loyalty")) {
         create_loyalty_table(location_by_id, members, quality);
         create_loyalty_table(location_by_id, members, quality);
-      } else if (document.title == "Attendance") {
+      } else if (document.title.includes("Attendance")) {
         create_attendance_table(location_by_id, members, quality);
         create_attendance_table(location_by_id, members, quality);
       }
@@ -101,12 +150,12 @@ function event_listeners(location_by_id, members, quality = 0) {
     .addEventListener("change", function() {
       if (document.title == "Senate Data" || document.title == "House Data") {
         create_state_menu(location_by_id, members);
-      } else if (document.title == "Loyalty") {
+      } else if (document.title.includes("Loyalty")) {
         create_loyalty_table(location_by_id, members, quality);
         create_loyalty_table(location_by_id, members, quality);
-      } else if (document.title == "Attendance") {
-        create_attendance_table("worst-table", members_data, "worst");
-        create_attendance_table("best-table", members_data, "best");
+      } else if (document.title.includes("Attendance")) {
+        create_attendance_table("worst-table", members, "worst");
+        create_attendance_table("best-table", members, "best");
       }
     });
 }
@@ -124,8 +173,11 @@ const checked_filters_values = () => {
   for (i = 0; i < selected_states.length; i++) {
     selectedBoxes.states.push(selected_states[i].value);
   }
+  // console.log(`p: ${selectedBoxes.party} s: ${selectedBoxes.states}`);
   return selectedBoxes;
 };
+
+// ----------- tables ------------
 
 const create_members_table = (location_by_id, members_list) => {
   const filters_values = checked_filters_values();
@@ -221,15 +273,16 @@ const create_attendance_table = (location_by_id, members_list, attend) => {
       }
     }
   }
+  // console.log(attendance_list);
   const sort_by_attendance = attendance_list.sort((a, b) => {
     return b.attendance - a.attendance;
   });
 
   const list_length = sort_by_attendance.length;
-  const ten_percent = list_length * 0.1;
-
+  const ten_percent = Math.floor(list_length * 0.1);
+  // console.log(ten_percent);
   const worst_attend = sort_by_attendance.slice(-ten_percent);
-  const best_attend = sort_by_attendance.slice(0, Math.floor(ten_percent));
+  const best_attend = sort_by_attendance.slice(0, ten_percent);
   worst_attend.sort((a, b) => b.missed_votes - a.missed_votes);
   best_attend.sort((a, b) => a.missed_votes - b.missed_votes);
 
@@ -470,23 +523,55 @@ const at_a_glance_table = (location_by_id, members_list) => {
 
 // ----------------------------  functions end --------------------------
 
-// -------- functions calls ----------------
+// -------- page start functions calls ------------
 
-create_state_menu();
+const start_page = json => {
+  const members_data = json.results[0].members;
 
-if (document.title == "Attendance") {
-  event_listeners("worst-table", members_data, "worst");
-  event_listeners("best-table", members_data, "best");
-  create_attendance_table("worst-table", members_data, "worst");
-  create_attendance_table("best-table", members_data, "best");
-  at_a_glance_table("at-glance", members_data);
-} else if (document.title == "Loyalty") {
-  event_listeners("worst-table", members_data, "worst");
-  event_listeners("best-table", members_data, "best");
-  create_loyalty_table("worst-table", members_data, "worst");
-  create_loyalty_table("best-table", members_data, "best");
-  at_a_glance_table("at-glance", members_data);
-} else if (document.title == "Senate Data" || document.title == "House Data") {
-  event_listeners("data", members_data);
-  create_members_table("data", members_data);
-}
+  if (document.title.includes("Attendance")) {
+    event_listeners("worst-table", members_data, "worst");
+    event_listeners("best-table", members_data, "best");
+    create_state_menu(
+      "worst-table",
+      "state-menu-dropdown",
+      members_data,
+      "worst"
+    );
+    create_state_menu(
+      "best-table",
+      "state-menu-dropdown",
+      members_data,
+      "best"
+    );
+    create_attendance_table("worst-table", members_data, "worst");
+    create_attendance_table("best-table", members_data, "best");
+    at_a_glance_table("at-glance", members_data);
+  } else if (document.title.includes("Loyalty")) {
+    event_listeners("worst-table", members_data, "worst");
+    event_listeners("best-table", members_data, "best");
+    create_state_menu(
+      "worst-table",
+      "state-menu-dropdown",
+      members_data,
+      "worst"
+    );
+    create_state_menu(
+      "best-table",
+      "state-menu-dropdown",
+      members_data,
+      "best"
+    );
+    create_loyalty_table("worst-table", members_data, "worst");
+    create_loyalty_table("best-table", members_data, "best");
+    at_a_glance_table("at-glance", members_data);
+  } else if (
+    document.title == "Senate Data" ||
+    document.title == "House Data"
+  ) {
+    create_state_menu("data", "state-menu-dropdown", members_data);
+    event_listeners("data", members_data);
+    create_members_table("data", members_data);
+  }
+};
+
+fatch_json();
