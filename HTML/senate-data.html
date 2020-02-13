@@ -94,10 +94,10 @@
               >Party Loyalty</a
             >
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="../HTML/senate-data.html"
+              <a class="dropdown-item" href="../statistic/HTML/Senate loyalty.html"
                 >Senate</a
               >
-              <a class="dropdown-item" href="house page.html">House</a>
+              <a class="dropdown-item" href="../statistic/HTML/House loyalty.html">House</a>
             </div>
           </li>
         </ul>
@@ -117,8 +117,55 @@
           ambassadors, and other federal uniformed officers, as well as trial of
           federal officials impeached by the House.
         </p>
-
-        <div id="senate-data"></div>
+        <label for="filterParty">Apply filter:</label>
+        <div class="form-check form-check-inline" id="filterParty">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="CheckboxDemocrats"
+            value="D"
+            name="party"
+          />
+          <label class="form-check-label" for="CheckboxDemocrats"
+            >Democrats</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="CheckboxReplubicans"
+            value="R"
+            name="party"
+          />
+          <label class="form-check-label" for="CheckboxReplubicans"
+            >Replubicans</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="CheckboxIndependents"
+            value="I"
+            name="party"
+          />
+          <label class="form-check-label" for="CheckboxIndependents"
+            >Independents</label
+          >
+          <button type="button" class="btn btn-default dropdown-toggle" 
+          data-toggle="dropdown">State<span class="caret"></span>
+          </button>
+            <!-- modal -->
+            <ul
+              class="dropdown-menu scrollable-menu"
+              role="menu"
+              id="state-menu-dropdown"
+            >
+            </ul>
+          </span>
+        </div>
+        <div id="data"></div>
       </div>
 
       <footer class="page-footer font-small blue fixed-bottom">

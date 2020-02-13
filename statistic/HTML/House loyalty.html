@@ -107,6 +107,54 @@
                 most faithful in voting for their party's nominee for office and
                 legislation that backs their party's agenda.
               </p>
+              <label for="filterParty">Apply filter:</label>
+        <div class="form-check form-check-inline" id="filterParty">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="CheckboxDemocrats"
+            value="D"
+            name="party"
+          />
+          <label class="form-check-label" for="CheckboxDemocrats"
+            >Democrats</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="CheckboxReplubicans"
+            value="R"
+            name="party"
+          />
+          <label class="form-check-label" for="CheckboxReplubicans"
+            >Replubicans</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="CheckboxIndependents"
+            value="I"
+            name="party"
+          />
+          <label class="form-check-label" for="CheckboxIndependents"
+            >Independents</label
+          >
+          <button type="button" class="btn btn-default dropdown-toggle" 
+          data-toggle="dropdown">State<span class="caret"></span>
+          </button>
+            <!-- modal -->
+            <ul
+              class="dropdown-menu scrollable-menu"
+              role="menu"
+              id="state-menu-dropdown"
+            >
+            </ul>
+          </span>
+        </div>
             </div>
           </div>
         </div>
@@ -124,7 +172,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Least Loyal (Bottom 10% of Party)</h5>
-              <p class="card-text" id="loyal-worst-table"></p>
+              <p class="card-text" id="worst-table"></p>
             </div>
           </div>
         </div>
@@ -132,7 +180,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Most Loyal (Top 10% of Party)</h5>
-              <p class="card-text" id="loyal-best-table"></p>
+              <p class="card-text" id="best-table"></p>
             </div>
           </div>
         </div>

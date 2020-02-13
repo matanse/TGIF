@@ -116,6 +116,54 @@
                 the Senate, the Vice President may (if present) cast the
                 tiebreaking vote.
               </p>
+              <label for="filterParty">Apply filter:</label>
+              <div class="form-check form-check-inline" id="filterParty">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="CheckboxDemocrats"
+                  value="D"
+                  name="party"
+                />
+                <label class="form-check-label" for="CheckboxDemocrats"
+                  >Democrats</label
+                >
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="CheckboxReplubicans"
+                  value="R"
+                  name="party"
+                />
+                <label class="form-check-label" for="CheckboxReplubicans"
+                  >Replubicans</label
+                >
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="CheckboxIndependents"
+                  value="I"
+                  name="party"
+                />
+                <label class="form-check-label" for="CheckboxIndependents"
+                  >Independents</label
+                >
+                <button type="button" class="btn btn-default dropdown-toggle" 
+                data-toggle="dropdown">State<span class="caret"></span>
+                </button>
+                  <!-- modal -->
+                  <ul
+                    class="dropdown-menu scrollable-menu"
+                    role="menu"
+                    id="state-menu-dropdown"
+                  >
+                  </ul>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -133,7 +181,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Least Engaged (Bottom 10% Attendance)</h5>
-              <p class="card-text" id="attend-worst-table"></p>
+              <p class="card-text" id="worst-table"></p>
             </div>
           </div>
         </div>
@@ -141,7 +189,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Most Engaged (Top 10% Attendance)</h5>
-              <p class="card-text" id="attend-best-table"></p>
+              <p class="card-text" id="best-table"></p>
             </div>
           </div>
         </div>
