@@ -382,15 +382,16 @@ const create_loyalty_table = (location_by_id, members_list, loyalty) => {
       }
     }
   }
+
   const sort_by_loyalty = loyalty_list.sort((a, b) => {
     return b.party_pct - a.party_pct;
   });
 
   const list_length = sort_by_loyalty.length;
-  const ten_percent = list_length * 0.1;
+  const ten_percent = Math.floor(list_length * 0.1);
 
   const worst_loyal = sort_by_loyalty.slice(-ten_percent);
-  const best_loyal = sort_by_loyalty.slice(0, Math.floor(ten_percent));
+  const best_loyal = sort_by_loyalty.slice(0, ten_percent);
 
   // --------- create table missed ------
   const categories = ["Name", "No. Party Votes", "% Party Votes"];
