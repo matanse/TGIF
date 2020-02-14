@@ -282,14 +282,14 @@ const create_attendance_table = (location_by_id, members_list, attend) => {
   const ten_percent = Math.floor(list_length * 0.1);
 
   const best_attend = sort_by_attendance.slice(0, ten_percent);
-  // best_attend.sort((a, b) => a.missed_votes - b.missed_votes);
+  best_attend.sort((a, b) => a.missed_votes - b.missed_votes);
 
   const lowest_attendance = attendance_list.sort((a, b) => {
     return a.attendance - b.attendance;
   });
 
   const worst_attend = lowest_attendance.slice(0, ten_percent);
-  //worst_attend.sort((a, b) => b.missed_votes - a.missed_votes);
+  worst_attend.sort((a, b) => b.missed_votes - a.missed_votes);
 
   // -------- create table missed -------------
 
