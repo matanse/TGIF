@@ -61,9 +61,9 @@ const create_state_menu = (
   quality = 0
 ) => {
   const states = [];
-  for (member in members) {
-    if (states.includes(members[member].state) != true) {
-      states.push(members[member].state);
+  for (i in members) {
+    if (states.includes(members[i].state) != true) {
+      states.push(members[i].state);
     }
   }
   states.sort();
@@ -273,18 +273,23 @@ const create_attendance_table = (location_by_id, members_list, attend) => {
       }
     }
   }
-  // console.log(attendance_list);
+
   const sort_by_attendance = attendance_list.sort((a, b) => {
     return b.attendance - a.attendance;
   });
 
   const list_length = sort_by_attendance.length;
   const ten_percent = Math.floor(list_length * 0.1);
-  // console.log(ten_percent);
-  const worst_attend = sort_by_attendance.slice(-ten_percent);
+
   const best_attend = sort_by_attendance.slice(0, ten_percent);
-  worst_attend.sort((a, b) => b.missed_votes - a.missed_votes);
-  best_attend.sort((a, b) => a.missed_votes - b.missed_votes);
+  // best_attend.sort((a, b) => a.missed_votes - b.missed_votes);
+
+  const lowest_attendance = attendance_list.sort((a, b) => {
+    return a.attendance - b.attendance;
+  });
+
+  const worst_attend = lowest_attendance.slice(0, ten_percent);
+  //worst_attend.sort((a, b) => b.missed_votes - a.missed_votes);
 
   // -------- create table missed -------------
 
