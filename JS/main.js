@@ -1,6 +1,6 @@
 // ---------------- functions    -------------
 
-const fatch_json = () => {
+const fetch_json = () => {
   if (document.title.includes("Senate")) {
     fetch("https://api.propublica.org/congress/v1/113/senate/members.json", {
       headers: {
@@ -30,7 +30,10 @@ const fatch_json = () => {
   }
 };
 
-const create_table_head_and_body_bY_lucation = (location_by_id, col_list) => {
+const create_table_head_and_return_tbody_by_location = (
+  location_by_id,
+  col_list
+) => {
   const tblLocation = document.getElementById(location_by_id);
   tblLocation.innerHTML = "";
   const tbl = document.createElement("table");
@@ -47,14 +50,10 @@ const create_table_head_and_body_bY_lucation = (location_by_id, col_list) => {
   tbl.setAttribute("style", "text-align:center;");
   tbl.setAttribute("class", "table");
 
-  const table_elemnts = {
-    tblhead: tblHead,
-    tblbody: tblBody
-  };
-  return table_elemnts;
+  return tblBody;
 };
 
-const create_state_menu = (
+const create_state_dropdown_menu = (
   table_location_id,
   location_by_id,
   members,
@@ -62,7 +61,7 @@ const create_state_menu = (
 ) => {
   const states = [];
   for (i in members) {
-    if (states.includes(members[i].state) != true) {
+    if (!states.includes(members[i].state)) {
       states.push(members[i].state);
     }
   }
@@ -105,51 +104,45 @@ const create_state_menu = (
   }
 };
 
-function event_listeners(location_by_id, members, quality = 0) {
+const event_listeners = (location_by_id, members, quality = "") => {
   document
     .getElementById("CheckboxDemocrats")
     .addEventListener("change", function() {
-      if (document.title == "Senate Data" || document.title == "House Data") {
+      if (document.title.includes("Data")) {
         create_members_table(location_by_id, members);
       } else if (document.title.includes("Loyalty")) {
         create_loyalty_table(location_by_id, members, quality);
-        create_loyalty_table(location_by_id, members, quality);
       } else if (document.title.includes("Attendance")) {
-        create_attendance_table(location_by_id, members, quality);
         create_attendance_table(location_by_id, members, quality);
       }
     });
   document
-    .getElementById("CheckboxReplubicans")
+    .getElementById("CheckboxRepublicans")
     .addEventListener("change", function() {
-      if (document.title == "Senate Data" || document.title == "House Data") {
+      if (document.title.includes("Data")) {
         create_members_table(location_by_id, members);
       } else if (document.title.includes("Loyalty")) {
         create_loyalty_table(location_by_id, members, quality);
-        create_loyalty_table(location_by_id, members, quality);
       } else if (document.title.includes("Attendance")) {
-        create_attendance_table(location_by_id, members, quality);
         create_attendance_table(location_by_id, members, quality);
       }
     });
   document
     .getElementById("CheckboxIndependents")
     .addEventListener("change", function() {
-      if (document.title == "Senate Data" || document.title == "House Data") {
+      if (document.title.includes("Data")) {
         create_members_table(location_by_id, members);
       } else if (document.title.includes("Loyalty")) {
         create_loyalty_table(location_by_id, members, quality);
-        create_loyalty_table(location_by_id, members, quality);
       } else if (document.title.includes("Attendance")) {
-        create_attendance_table(location_by_id, members, quality);
         create_attendance_table(location_by_id, members, quality);
       }
     });
   document
     .getElementById("state-menu-dropdown")
     .addEventListener("change", function() {
-      if (document.title == "Senate Data" || document.title == "House Data") {
-        create_state_menu(location_by_id, members);
+      if (document.title.includes("Data")) {
+        create_state_dropdown_menu(location_by_id, members);
       } else if (document.title.includes("Loyalty")) {
         create_loyalty_table(location_by_id, members, quality);
         create_loyalty_table(location_by_id, members, quality);
@@ -158,29 +151,39 @@ function event_listeners(location_by_id, members, quality = 0) {
         create_attendance_table("best-table", members, "best");
       }
     });
-}
+};
 
 const checked_filters_values = () => {
-  let selectedBoxes = {
+  let selected_boxes = {
     party: [],
     states: []
   };
   let selected_parties = document.querySelectorAll("input[name=party]:checked");
   let selected_states = document.querySelectorAll("input[name=state]:checked");
   for (i = 0; i < selected_parties.length; i++) {
-    selectedBoxes.party.push(selected_parties[i].value);
+    selected_boxes.party.push(selected_parties[i].value);
   }
   for (i = 0; i < selected_states.length; i++) {
-    selectedBoxes.states.push(selected_states[i].value);
+    selected_boxes.states.push(selected_states[i].value);
   }
-  // console.log(`p: ${selectedBoxes.party} s: ${selectedBoxes.states}`);
-  return selectedBoxes;
+  if (
+    (selected_boxes.party.includes(member.party) &&
+      selected_boxes.states.length == 0) ||
+    (selected_boxes.states.includes(member.state) &&
+      selected_boxes.party.length == 0) ||
+    (selected_boxes.states.includes(member.state) &&
+      selected_boxes.party.includes(member.party)) ||
+    (selected_boxes.party.length == 0 && selected_boxes.states.length == 0)
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 // ----------- tables ------------
 
 const create_members_table = (location_by_id, members_list) => {
-  const filters_values = checked_filters_values();
   const categories = [
     "Full Name",
     "Party",
@@ -189,23 +192,15 @@ const create_members_table = (location_by_id, members_list) => {
     "Percentage of Votes with Party"
   ];
 
-  const table_elements = create_table_head_and_body_bY_lucation(
+  const table_element = create_table_head_and_return_tbody_by_location(
     location_by_id,
     categories
   );
-  const tblHead = table_elements.tblhead;
-  const tblBody = table_elements.tblbody;
+
+  const tblBody = table_element;
 
   for (member of members_list) {
-    if (
-      (filters_values.party.includes(member.party) &&
-        filters_values.states.length == 0) ||
-      (filters_values.states.includes(member.state) &&
-        filters_values.party.length == 0) ||
-      (filters_values.states.includes(member.state) &&
-        filters_values.party.includes(member.party)) ||
-      (filters_values.party.length == 0 && filters_values.states.length == 0)
-    ) {
+    if (checked_filters_values()) {
       const tblRow = document.createElement("tr");
       const tblCell_name = document.createElement("td");
 
@@ -239,19 +234,10 @@ const create_members_table = (location_by_id, members_list) => {
 };
 
 const create_attendance_table = (location_by_id, members_list, attend) => {
-  const filters_values = checked_filters_values();
   const attendance_list = [];
 
   for (member of members_list) {
-    if (
-      (filters_values.party.includes(member.party) &&
-        filters_values.states.length == 0) ||
-      (filters_values.states.includes(member.state) &&
-        filters_values.party.length == 0) ||
-      (filters_values.states.includes(member.state) &&
-        filters_values.party.includes(member.party)) ||
-      (filters_values.party.length == 0 && filters_values.states.length == 0)
-    ) {
+    if (checked_filters_values()) {
       if (member.middle_name == null) {
         attendance_list.push({
           name: `${member.first_name} ${member.last_name}`,
@@ -281,6 +267,9 @@ const create_attendance_table = (location_by_id, members_list, attend) => {
   const list_length = sort_by_attendance.length;
   const ten_percent = Math.floor(list_length * 0.1);
 
+  // console.log(ten_percent);
+  // console.log(sort_by_attendance);
+
   const best_attend = sort_by_attendance.slice(0, ten_percent);
   best_attend.sort((a, b) => a.missed_votes - b.missed_votes);
 
@@ -295,12 +284,11 @@ const create_attendance_table = (location_by_id, members_list, attend) => {
 
   const categories = ["Name", "No. Missed Votes", "% Missed"];
 
-  const table_elements = create_table_head_and_body_bY_lucation(
+  const table_element = create_table_head_and_return_tbody_by_location(
     location_by_id,
     categories
   );
-  const tblHead = table_elements.tblhead;
-  const tblBody = table_elements.tblbody;
+  const tblBody = table_element;
 
   if (attend == "worst") {
     for (member of worst_attend) {
@@ -348,18 +336,10 @@ const create_attendance_table = (location_by_id, members_list, attend) => {
 };
 
 const create_loyalty_table = (location_by_id, members_list, loyalty) => {
-  const filters_values = checked_filters_values();
   const loyalty_list = [];
+
   for (member of members_list) {
-    if (
-      (filters_values.party.includes(member.party) &&
-        filters_values.states.length == 0) ||
-      (filters_values.states.includes(member.state) &&
-        filters_values.party.length == 0) ||
-      (filters_values.states.includes(member.state) &&
-        filters_values.party.includes(member.party)) ||
-      (filters_values.party.length == 0 && filters_values.states.length == 0)
-    ) {
+    if (checked_filters_values()) {
       const num_votes_with_party = Math.round(
         (member.total_votes / 100) * member.votes_with_party_pct
       );
@@ -396,12 +376,11 @@ const create_loyalty_table = (location_by_id, members_list, loyalty) => {
   // --------- create table missed ------
   const categories = ["Name", "No. Party Votes", "% Party Votes"];
 
-  const table_elements = create_table_head_and_body_bY_lucation(
+  const table_element = create_table_head_and_return_tbody_by_location(
     location_by_id,
     categories
   );
-  const tblHead = table_elements.tblhead;
-  const tblBody = table_elements.tblbody;
+  const tblBody = table_element;
 
   if (loyalty == "worst") {
     for (member of worst_loyal) {
@@ -493,12 +472,12 @@ const at_a_glance_table = (location_by_id, members_list) => {
 
   const categories = ["Party", "No. of Reps", "% Voted w/ Party"];
 
-  const table_elements = create_table_head_and_body_bY_lucation(
+  const table_element = create_table_head_and_return_tbody_by_location(
     location_by_id,
     categories
   );
-  const tblHead = table_elements.tblhead;
-  const tblBody = table_elements.tblbody;
+  // const tblHead = table_elements.tblhead;
+  const tblBody = table_element;
 
   for (party in members_parties) {
     const tblRow = document.createElement("tr");
@@ -537,13 +516,13 @@ const start_page = json => {
   if (document.title.includes("Attendance")) {
     event_listeners("worst-table", members_data, "worst");
     event_listeners("best-table", members_data, "best");
-    create_state_menu(
+    create_state_dropdown_menu(
       "worst-table",
       "state-menu-dropdown",
       members_data,
       "worst"
     );
-    create_state_menu(
+    create_state_dropdown_menu(
       "best-table",
       "state-menu-dropdown",
       members_data,
@@ -555,13 +534,13 @@ const start_page = json => {
   } else if (document.title.includes("Loyalty")) {
     event_listeners("worst-table", members_data, "worst");
     event_listeners("best-table", members_data, "best");
-    create_state_menu(
+    create_state_dropdown_menu(
       "worst-table",
       "state-menu-dropdown",
       members_data,
       "worst"
     );
-    create_state_menu(
+    create_state_dropdown_menu(
       "best-table",
       "state-menu-dropdown",
       members_data,
@@ -574,10 +553,10 @@ const start_page = json => {
     document.title == "Senate Data" ||
     document.title == "House Data"
   ) {
-    create_state_menu("data", "state-menu-dropdown", members_data);
+    create_state_dropdown_menu("data", "state-menu-dropdown", members_data);
     event_listeners("data", members_data);
     create_members_table("data", members_data);
   }
 };
 
-fatch_json();
+fetch_json();
